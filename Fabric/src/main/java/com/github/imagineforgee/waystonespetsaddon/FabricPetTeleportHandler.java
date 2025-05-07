@@ -20,7 +20,6 @@ public class FabricPetTeleportHandler implements PetTeleportHandler {
                 pet -> pet.isTamed()
                         && player.getUuid().equals(pet.getOwnerUuid())
                         && (PetTeleportConfig.values.teleportSittingPets || !pet.isSitting()));
-
         int count = 0;
 
         for (TameableEntity pet : pets) {
@@ -46,7 +45,7 @@ public class FabricPetTeleportHandler implements PetTeleportHandler {
 
             if (PetTeleportConfig.values.teleportDelayTicks > 0) {
                 int delay = PetTeleportConfig.values.teleportDelayTicks;
-                petLevel.getServer().execute(() -> {
+                DelayedTaskHandler.schedule(delay, () -> {
                     pet.teleport(finalX, finalY, finalZ);
                 });
             } else {

@@ -1,0 +1,145 @@
+plugins {
+    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'maven-publish'
+    id 'idea'
+    id 'net.darkhax.curseforgegradle' version '1.1.26'
+    id "com.modrinth.minotaur" version "2.+"
+}
+
+version = version
+group = group
+
+base {
+    archivesName = "${mod_id}-fabric-${mod_version}-${minecraft_version}"
+}
+
+repositories {
+    maven { url "https://maven.shedaniel.me/" }
+    maven { url "https://maven.terraformersmc.com/releases/" }
+    maven { url "https://api.modrinth.com/maven" }
+    maven { url "https://cursemaven.com" }
+    maven { url "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" }
+}
+
+dependencies {
+    minecraft "com.mojang:minecraft:${minecraft_version}"
+    mappings "net.fabricmc:yarn:${minecraft_version}+build.28:v2"
+    modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
+    modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    modImplementation("curse.maven:waystones-fabric-${waystones_fabric_project_id}:${waystones_fabric_file_id}") {
+        exclude group: "net.fabricmc", module: "fabric-loader"
+    }
+    modImplementation("net.blay09.mods:balm-fabric:${balm_fabric_version}") {
+        exclude group: "net.fabricmc", module: "fabric-loader"
+    }
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}") {
+        exclude group: "net.fabricmc", module: "fabric-loader"
+    }
+    implementation 'com.electronwill.night-config:core:3.6.5'
+    implementation 'com.electronwill.night-config:toml:3.6.5'
+    modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forge_config_version}"
+    implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
+    implementation project(":Common")
+}
+
+loom {
+    runs {
+        client {
+            client()
+            setConfigName("Fabric Client")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+        server {
+            server()
+            setConfigName("Fabric Server")
+            ideConfigGenerated(true)
+            runDir("run")
+        }
+    }
+}
+
+
+processResources {
+    tasks.named('processResources', ProcessResources).configure {
+        var replaceProperties = [minecraft_version   : minecraft_version, fabric_loader_version: fabric_loader_version,
+                                 fabric_api_version: fabric_api_version, mod_id: mod_id, mod_name: mod_name, mod_license: mod_license,
+                                 mod_version: mod_version, mod_authors: mod_authors, mod_description: mod_description,
+        ]
+
+        inputs.properties replaceProperties
+
+        filesMatching(['fabric.mod.json']) {
+            expand replaceProperties + [project: project]
+        }
+    }
+}
+
+tasks.withType(JavaCompile) {
+    source(project(":Common").sourceSets.main.allSource)
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId project.group
+            artifactId project.archivesBaseName
+            version project.version
+            from components.java
+        }
+    }
+
+    repositories {
+        maven {
+            url "file://" + System.getenv("local_maven")
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'net.fabricmc' && details.requested.name == 'fabric-loader') {
+            details.useVersion fabric_loader_version
+            details.because 'Avoid duplicate Fabric Loader versions on classpath'
+        }
+    }
+}
+
+tasks.register('curseforge', net.darkhax.curseforgegradle.TaskPublishCurseForge) {
+    dependsOn 'build'
+    description = 'Publishes the Fabric build to CurseForge.'
+    group = 'publishing'
+
+    apiToken = env.CURSEFORGE_TOKEN.value ?: "none"
+
+    def projectId = env.CURSEFORGE_PROJECT_ID.value
+            onlyIf {
+                projectId != null
+            }
+
+    if (projectId) {
+        def mainFile = upload(projectId, file("${project.buildDir}/libs/${archivesBaseName}.jar"))
+        mainFile.changelog = rootProject.file('CHANGELOG.md').text
+        mainFile.addModLoader("Fabric")
+        mainFile.addRequirement("balm-fabric")
+        mainFile.addRequirement("waystones-fabric")
+        mainFile.addRequirement("forge-config-api-port-fabric")
+        minecraft_version.split(',').toList().each { mainFile.addGameVersion(it) }
+        mainFile.releaseType = release_type
+    }
+}
+
+modrinth {
+    token = env.MODRINTH_TOKEN.value
+    projectId = env.MODRINTH_PROJECT_ID.value
+    versionType = release_type
+    uploadFile = file("${project.buildDir}/libs/${archivesBaseName}.jar")
+    gameVersions = minecraft_version.split(',').collect { it.trim() }
+    loaders = ["fabric"]
+    dependencies {
+        required.project "MBAkmtvl"
+        required.project "LOpKHB2A"
+        required.project "ohNO6lps"
+    }
+    changelog = rootProject.file('CHANGELOG.md').text
+}
