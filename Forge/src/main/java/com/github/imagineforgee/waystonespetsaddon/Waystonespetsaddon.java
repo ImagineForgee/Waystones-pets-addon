@@ -1,6 +1,7 @@
 package com.github.imagineforgee.waystonespetsaddon;
 
 
+import com.github.imagineforgee.waystonespetsaddon.api.PlatformAbstractions;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.waystones.api.WaystoneTeleportEvent;
 import net.minecraft.server.level.ServerLevel;
@@ -22,8 +23,7 @@ public class Waystonespetsaddon {
                 ForgeConfig.CONFIG.applyToCommon();
             }
         });
-        PetTeleportAPI.HANDLER = new ForgePetTeleportHandler();
-
+        PlatformAbstractions.delayedTaskFactory = DelayedTaskImpl::new;
         Balm.getEvents().onEvent(WaystoneTeleportEvent.Pre.class, event ->{
             Entity entity = event.getContext().getEntity();
             if (!(entity instanceof ServerPlayer player)) return;
@@ -33,7 +33,7 @@ public class Waystonespetsaddon {
 
             ServerLevel level = player.getServer().getLevel(entity.getLevel().dimension());
             if (level != null) {
-                PetTeleportAPI.HANDLER.handleTeleport(player, targetVec, level);
+                PetTeleportHandler.handleTeleport(player, targetVec, level);
             }
         });
     }

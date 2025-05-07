@@ -23,9 +23,10 @@ repositories {
 
 dependencies {
     minecraft "com.mojang:minecraft:${minecraft_version}"
-    mappings "net.fabricmc:yarn:${minecraft_version}+build.28:v2"
+    mappings loom.officialMojangMappings()
     modImplementation "net.fabricmc:fabric-loader:${fabric_loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${fabric_api_version}"
+    implementation project(":Common")
     modImplementation("curse.maven:waystones-fabric-${waystones_fabric_project_id}:${waystones_fabric_file_id}") {
         exclude group: "net.fabricmc", module: "fabric-loader"
     }
@@ -39,7 +40,7 @@ dependencies {
     implementation 'com.electronwill.night-config:toml:3.6.5'
     modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forge_config_version}"
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    implementation project(":Common")
+
 }
 
 loom {

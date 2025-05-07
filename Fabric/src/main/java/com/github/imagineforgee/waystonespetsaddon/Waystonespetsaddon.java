@@ -1,12 +1,14 @@
 package com.github.imagineforgee.waystonespetsaddon;
 
+import com.github.imagineforgee.waystonespetsaddon.api.PlatformAbstractions;
+import com.github.imagineforgee.waystonespetsaddon.events.FabricTickHandler;
 import net.blay09.mods.balm.api.Balm;
 import net.blay09.mods.waystones.api.WaystoneTeleportEvent;
 import net.fabricmc.api.ModInitializer;
-import net.minecraft.entity.Entity;
-import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.server.world.ServerWorld;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
 
@@ -16,17 +18,18 @@ public class Waystonespetsaddon implements ModInitializer {
     public void onInitialize() {
         ModLoadingContext.registerConfig(Constants.MOD_ID, ModConfig.Type.COMMON, FabricConfig.COMMON_SPEC);
         FabricConfig.applyToCommon();
-        PetTeleportAPI.HANDLER = new FabricPetTeleportHandler();
-        Balm.getEvents().onEvent(WaystoneTeleportEvent.Pre.class, event -> {
+        PlatformAbstractions.delayedTaskFactory = DelayedTaskImpl::new;
+        FabricTickHandler.register();
+        Balm.getEvents().onEvent(WaystoneTeleportEvent.Pre.class, event ->{
             Entity entity = event.getContext().getEntity();
-            if (!(entity instanceof ServerPlayerEntity player)) return;
+            if (!(entity instanceof ServerPlayer player)) return;
 
-            Vec3d location = event.getContext().getDestination().getLocation();
-            Vec3d targetVec = new Vec3d(location.getX(), location.getY(), location.getZ());
+            Vec3 location = event.getContext().getDestination().getLocation();
+            Vec3 targetVec = new Vec3(location.x, location.y, location.z);
 
-            ServerWorld level = player.getServer().getWorld(entity.getWorld().getRegistryKey());
+            ServerLevel level = player.getServer().getLevel(entity.getLevel().dimension());
             if (level != null) {
-                PetTeleportAPI.HANDLER.handleTeleport(player, targetVec, level);
+                PetTeleportHandler.handleTeleport(player, targetVec, level);
             }
         });
     }
