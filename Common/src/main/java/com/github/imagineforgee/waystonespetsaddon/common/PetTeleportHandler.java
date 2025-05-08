@@ -1,7 +1,7 @@
-package com.github.imagineforgee.waystonespetsaddon;
+package com.github.imagineforgee.waystonespetsaddon.common;
 
-import com.github.imagineforgee.waystonespetsaddon.api.PlatformAbstractions;
-import com.github.imagineforgee.waystonespetsaddon.api.TickDelayedTaskManager;
+import com.github.imagineforgee.waystonespetsaddon.common.api.PlatformAbstractions;
+import com.github.imagineforgee.waystonespetsaddon.common.api.TickDelayedTaskManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;

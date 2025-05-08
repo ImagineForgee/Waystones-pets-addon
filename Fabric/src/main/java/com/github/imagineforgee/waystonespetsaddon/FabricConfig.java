@@ -1,5 +1,6 @@
 package com.github.imagineforgee.waystonespetsaddon;
 
+import com.github.imagineforgee.waystonespetsaddon.common.PetTeleportConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import org.apache.commons.lang3.tuple.Pair;
 

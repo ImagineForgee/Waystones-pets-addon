@@ -1,8 +1,7 @@
-package com.github.imagineforgee.waystonespetsaddon;
+package com.github.imagineforgee.waystonespetsaddon.common;
 
 public class PetTeleportConfig {
     public static ConfigValues values = new ConfigValues();
-
     public static class ConfigValues {
         public int maxPetsToTeleport = 5;
         public double teleportRadius = 10.0;

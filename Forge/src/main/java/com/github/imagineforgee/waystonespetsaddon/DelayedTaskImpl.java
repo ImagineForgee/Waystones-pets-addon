@@ -1,6 +1,6 @@
 package com.github.imagineforgee.waystonespetsaddon;
 
-import com.github.imagineforgee.waystonespetsaddon.api.IDelayedTask;
+import com.github.imagineforgee.waystonespetsaddon.common.api.IDelayedTask;
 
 public class DelayedTaskImpl implements IDelayedTask {
     private int ticksRemaining;

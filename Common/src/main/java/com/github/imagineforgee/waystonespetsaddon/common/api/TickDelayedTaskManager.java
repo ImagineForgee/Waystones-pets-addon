@@ -1,4 +1,4 @@
-package com.github.imagineforgee.waystonespetsaddon.api;
+package com.github.imagineforgee.waystonespetsaddon.common.api;
 
 import java.util.Iterator;
 import java.util.LinkedList;

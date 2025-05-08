@@ -1,13 +1,14 @@
 package com.github.imagineforgee.waystonespetsaddon;
 
 
-import com.github.imagineforgee.waystonespetsaddon.api.PlatformAbstractions;
+import com.github.imagineforgee.waystonespetsaddon.common.Common;
+import com.github.imagineforgee.waystonespetsaddon.common.Constants;
+import com.github.imagineforgee.waystonespetsaddon.common.api.PlatformAbstractions;
+import com.github.imagineforgee.waystonespetsaddon.common.client.CommonClient;
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.waystones.api.WaystoneTeleportEvent;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.phys.Vec3;
+import net.blay09.mods.balm.api.client.BalmClient;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -17,6 +18,8 @@ import net.minecraftforge.fml.event.config.ModConfigEvent;
 public class Waystonespetsaddon {
     
     public Waystonespetsaddon() {
+        Balm.initialize(Constants.MOD_ID, Common::initialize);
+        DistExecutor.safeRunWhenOn(Dist.CLIENT, () -> () -> BalmClient.initialize(Constants.MOD_ID, CommonClient::initialize));
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, ForgeConfig.SPEC);
         Mod.EventBusSubscriber.Bus.MOD.bus().get().addListener((ModConfigEvent e) -> {
             if (e.getConfig().getSpec() == ForgeConfig.SPEC) {
@@ -24,18 +27,6 @@ public class Waystonespetsaddon {
             }
         });
         PlatformAbstractions.delayedTaskFactory = DelayedTaskImpl::new;
-        Balm.getEvents().onEvent(WaystoneTeleportEvent.Pre.class, event ->{
-            Entity entity = event.getContext().getEntity();
-            if (!(entity instanceof ServerPlayer player)) return;
-
-            Vec3 location = event.getContext().getDestination().getLocation();
-            Vec3 targetVec = new Vec3(location.x, location.y, location.z);
-
-            ServerLevel level = player.getServer().getLevel(entity.getLevel().dimension());
-            if (level != null) {
-                PetTeleportHandler.handleTeleport(player, targetVec, level);
-            }
-        });
     }
 
 }

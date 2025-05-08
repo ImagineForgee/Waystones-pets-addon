@@ -12,7 +12,7 @@ A collection of enhancements and creative ideas to expand your addon for telepor
 ## 🐾 Pet Selection & Management
 
 ### 🔹 Shift + Use Selection
-- Open a GUI when shift+using a Waystone to select pets.
+- Open a GUI when a button is clicked in the waystones gui Waystone to select pets.
 - List nearby tamed pets with checkboxes.
 - Support persistent selection storage.
 

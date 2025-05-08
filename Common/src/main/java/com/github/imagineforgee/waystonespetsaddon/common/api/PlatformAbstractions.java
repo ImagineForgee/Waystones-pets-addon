@@ -1,6 +1,4 @@
-package com.github.imagineforgee.waystonespetsaddon.api;
-
-import java.util.function.Consumer;
+package com.github.imagineforgee.waystonespetsaddon.common.api;
 
 public class PlatformAbstractions {
     public static DelayedTaskFactory delayedTaskFactory;

@@ -13,10 +13,12 @@ minecraft {
 dependencies {
      compileOnly group:'org.spongepowered', name:'mixin', version:'0.8.5'
      implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
-    compileOnly("net.blay09.mods:balm-fabric:${balm_fabric_version}:dev") {
-        exclude(group: "net.fabricmc", module: "fabric-loader")
-        exclude(group: "net.fabricmc.fabric-api")
-    }
+        compileOnly("net.blay09.mods:balm-common:$balm_common_version") {
+            exclude(group: "net.blay09.mods", module: "shared-bridge")
+            changing = balm_common_version.endsWith("SNAPSHOT")
+        }
+
+    implementation "net.blay09.mods:waystones-common:${waystones_common_version}"
 }
 
 processResources {

@@ -20,6 +20,9 @@
     "entrypoints": {
       "main": [
         "com.github.imagineforgee.waystonespetsaddon.Waystonespetsaddon"
+      ],
+      "client": [
+        "com.github.imagineforgee.waystonespetsaddon.client.WaystonesPetsAddonClient"
       ]
     },
 

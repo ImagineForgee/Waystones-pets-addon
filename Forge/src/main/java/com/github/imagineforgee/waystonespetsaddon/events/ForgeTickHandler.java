@@ -1,7 +1,7 @@
 package com.github.imagineforgee.waystonespetsaddon.events;
 
-import com.github.imagineforgee.waystonespetsaddon.Constants;
-import com.github.imagineforgee.waystonespetsaddon.api.TickDelayedTaskManager;
+import com.github.imagineforgee.waystonespetsaddon.common.Constants;
+import com.github.imagineforgee.waystonespetsaddon.common.api.TickDelayedTaskManager;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;

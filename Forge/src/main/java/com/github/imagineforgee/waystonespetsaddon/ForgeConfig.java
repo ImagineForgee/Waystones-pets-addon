@@ -1,5 +1,6 @@
 package com.github.imagineforgee.waystonespetsaddon;
 
+import com.github.imagineforgee.waystonespetsaddon.common.PetTeleportConfig;
 import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.event.config.ModConfigEvent;

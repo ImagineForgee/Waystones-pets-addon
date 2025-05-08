@@ -80,8 +80,8 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("curse.maven:waystones-245755:4943265")
-    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_forge_version}")
+    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_version}")
+    implementation fg.deobf("net.blay09.mods:waystones-forge:${waystones_version}")
     compileOnly project(":Common")
 }
 

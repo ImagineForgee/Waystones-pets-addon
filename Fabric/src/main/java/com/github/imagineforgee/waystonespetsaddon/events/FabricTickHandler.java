@@ -1,6 +1,6 @@
 package com.github.imagineforgee.waystonespetsaddon.events;
 
-import com.github.imagineforgee.waystonespetsaddon.api.TickDelayedTaskManager;
+import com.github.imagineforgee.waystonespetsaddon.common.api.TickDelayedTaskManager;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 
 public class FabricTickHandler {
