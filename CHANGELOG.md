@@ -1,1 +1,1 @@
-Fixed fabric.mod.json balm dependency
+Fixed missing pack.mcmeta error

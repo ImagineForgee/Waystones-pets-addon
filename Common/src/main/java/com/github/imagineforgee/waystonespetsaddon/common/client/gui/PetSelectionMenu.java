@@ -20,7 +20,7 @@ public class PetSelectionMenu extends AbstractContainerMenu {
         return ItemStack.EMPTY;
     }
 
-    public static PetSelectionMenu createSelection(int syncId, Inventory inventory, FriendlyByteBuf buf) {
+    public static PetSelectionMenu createSelection(int syncId) {
         return new PetSelectionMenu(ModMenus.petSelection.get(), syncId);
     }
 

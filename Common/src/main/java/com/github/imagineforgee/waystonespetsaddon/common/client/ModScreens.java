@@ -9,7 +9,6 @@ import net.minecraft.world.inventory.MenuType;
 
 public class ModScreens {
     public static void initialize(BalmScreens screens) {
-        DeferredObject<MenuType<PetSelectionMenu>> ps = ModMenus.petSelection;
-        screens.registerScreen(ps::get, PetSelectionScreen::new);
+        screens.registerScreen(ModMenus.petSelection::get, PetSelectionScreen::new);
     }
 }
