@@ -25,6 +25,9 @@
         "com.github.imagineforgee.waystonespetsaddon.client.WaystonesPetsAddonClient"
       ]
     },
+  "mixins": [
+    "mixins.waystonespetsaddon.json"
+  ],
 
   "depends": {
     "fabricloader": "${fabric_loader_version}",

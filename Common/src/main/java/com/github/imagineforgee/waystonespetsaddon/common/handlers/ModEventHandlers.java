@@ -1,29 +1,23 @@
 package com.github.imagineforgee.waystonespetsaddon.common.handlers;
 
 import com.github.imagineforgee.waystonespetsaddon.common.PetTeleportHandler;
-import com.github.imagineforgee.waystonespetsaddon.common.client.ModScreens;
-import com.github.imagineforgee.waystonespetsaddon.common.client.gui.PetSelectionMenu;
-import com.github.imagineforgee.waystonespetsaddon.common.client.gui.screen.PetSelectionScreen;
-import com.github.imagineforgee.waystonespetsaddon.common.client.gui.widgets.IconButton;
-import com.github.imagineforgee.waystonespetsaddon.common.menu.PetMenuProvider;
+import com.github.imagineforgee.waystonespetsaddon.common.api.events.PetTamedEvent;
+import com.github.imagineforgee.waystonespetsaddon.common.network.ModNetworking;
+import com.github.imagineforgee.waystonespetsaddon.common.util.PetData;
+import com.github.imagineforgee.waystonespetsaddon.common.util.PetTracker;
 import net.blay09.mods.balm.api.Balm;
-import net.blay09.mods.balm.api.client.BalmClient;
-import net.blay09.mods.balm.api.event.TickPhase;
-import net.blay09.mods.balm.api.menu.BalmMenuProvider;
+import net.blay09.mods.balm.api.event.PlayerLoginEvent;
 import net.blay09.mods.waystones.api.WaystoneTeleportEvent;
-import net.blay09.mods.waystones.client.gui.screen.WaystoneSelectionScreen;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.phys.Vec3;
 
-import java.lang.reflect.Method;
+import java.util.Objects;
+import java.util.Set;
+import java.util.UUID;
 
 public class ModEventHandlers {
     private static Screen lastScreen = null;
@@ -42,40 +36,19 @@ public class ModEventHandlers {
             }
         });
 
-        Balm.getEvents().onEvent(TickPhase.End.getClass(), (screen) -> {
-            Minecraft mc = Minecraft.getInstance();
-            Screen current = mc.screen;
-            LocalPlayer player = mc.player;
-
-            if (current != null && current != lastScreen) {
-                lastScreen = current;
-
-                if (current instanceof WaystoneSelectionScreen) {
-                    addPetsButton(current, player);
-                }
-            }
+        Balm.getEvents().onEvent(PetTamedEvent.class, event -> {
+            ServerPlayer player = event.getPlayer();
+            UUID petId = event.getPet().getUUID();
+            PetTracker.addPet(player, petId);
+            ModNetworking.sendPetDataTo(player, PetTracker.get(player).getPets());
         });
-    }
 
-    private static void addPetsButton(Screen screen, LocalPlayer player) {
-        int btnWidth = 50;
-        int btnHeight = 20;
-        int x = 10;
-        int y = screen.height / 2 - btnHeight / 2;
+        Balm.getEvents().onEvent(PlayerLoginEvent.class, player -> {
+            ServerPlayer serverPlayer = player.getPlayer();
+            Set<UUID> pets = PetTracker.get(serverPlayer).getPets();
+            ModNetworking.sendPetDataTo(serverPlayer, pets);
+        });
 
-        Button petsButton = new Button(
-                x, y,
-                btnWidth, btnHeight,
-                Component.literal("Pets"),
-                btn -> {
-                    Balm.getNetworking().openGui(
-                            player,
-                            new PetMenuProvider()
-                    );
-                }
-        );
-
-        BalmClient.getScreens().addRenderableWidget(screen, petsButton);
     }
 }
 
