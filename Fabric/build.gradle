@@ -41,7 +41,7 @@ dependencies {
     }
     implementation 'com.electronwill.night-config:core:3.6.5'
     implementation 'com.electronwill.night-config:toml:3.6.5'
-    modImplementation "net.minecraftforge:forgeconfigapiport-fabric:${forge_config_version}"
+    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_version}"
     implementation project(":Common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
@@ -136,6 +136,8 @@ tasks.register('curseforge', net.darkhax.curseforgegradle.TaskPublishCurseForge)
 modrinth {
     token = env.MODRINTH_TOKEN.value
     projectId = env.MODRINTH_PROJECT_ID.value
+    versionName = archivesBaseName
+    versionNumber = mod_version
     versionType = release_type
     uploadFile = file("${project.buildDir}/libs/${archivesBaseName}.jar")
     gameVersions = minecraft_version.split(',').collect { it.trim() }

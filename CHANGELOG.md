@@ -1,3 +1,4 @@
 Fixed missing pack.mcmeta error
 
-8/22/25 : 11:46pm - Ported to 1.19.3
+8/22/25 : 11:46pm - Ported to 1.19.3 \
+9/27/25 : 3:56pm - Ported to 1.19.4

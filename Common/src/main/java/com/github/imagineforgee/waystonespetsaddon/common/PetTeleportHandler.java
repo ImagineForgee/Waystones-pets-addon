@@ -3,6 +3,7 @@ package com.github.imagineforgee.waystonespetsaddon.common;
 import com.github.imagineforgee.waystonespetsaddon.common.api.PlatformAbstractions;
 import com.github.imagineforgee.waystonespetsaddon.common.api.TickDelayedTaskManager;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.TamableAnimal;
@@ -10,7 +11,12 @@ import net.minecraft.world.phys.Vec3;
 
 public class PetTeleportHandler {
     public static void handleTeleport(ServerPlayer player, Vec3 targetVec, ServerLevel targetLevel) {
-        BlockPos targetPos = new BlockPos(targetVec);
+        Vec3i targetVecI = new Vec3i(
+                (int) Math.floor(targetVec.x),
+                (int) Math.floor(targetVec.y),
+                (int) Math.floor(targetVec.z)
+        );
+        BlockPos targetPos = new BlockPos(targetVecI);
 
         var pets = player.level.getEntitiesOfClass(TamableAnimal.class,
                 player.getBoundingBox().inflate(PetTeleportConfig.values.teleportRadius),

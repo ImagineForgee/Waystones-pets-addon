@@ -135,6 +135,8 @@ tasks.register('curseforge', net.darkhax.curseforgegradle.TaskPublishCurseForge)
 modrinth {
     token = env.MODRINTH_TOKEN.value
     projectId = env.MODRINTH_PROJECT_ID.value
+    versionName = archivesBaseName
+    versionNumber = mod_version
     versionType = release_type
     uploadFile = file("${project.buildDir}/libs/${archivesBaseName}.jar")
     gameVersions = minecraft_version.split(',').collect { it.trim() }
