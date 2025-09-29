@@ -18,7 +18,7 @@ public class PetTeleportHandler {
         );
         BlockPos targetPos = new BlockPos(targetVecI);
 
-        var pets = player.level.getEntitiesOfClass(TamableAnimal.class,
+        var pets = player.level().getEntitiesOfClass(TamableAnimal.class,
                 player.getBoundingBox().inflate(PetTeleportConfig.values.teleportRadius),
                 pet -> pet.isTame()
                         && player.getUUID().equals(pet.getOwnerUUID())
@@ -27,7 +27,7 @@ public class PetTeleportHandler {
         int count = 0;
 
         for (TamableAnimal pet : pets) {
-            if (!(pet.level instanceof ServerLevel petLevel)) continue;
+            if (!(pet.level() instanceof ServerLevel petLevel)) continue;
             if (count >= PetTeleportConfig.values.maxPetsToTeleport) break;
 
             if (pet.isInSittingPose() && PetTeleportConfig.values.forceUnsitPets) {

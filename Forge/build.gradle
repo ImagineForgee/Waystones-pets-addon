@@ -79,10 +79,10 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_version}") {
-        changing = balm_version.endsWith("SNAPSHOT")
+    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_forge_version}") {
+        changing = balm_forge_version.endsWith("SNAPSHOT")
     }
-    implementation fg.deobf("net.blay09.mods:waystones-forge:${waystones_version}")
+    implementation fg.deobf("net.blay09.mods:waystones-forge:${waystones_forge_version}")
     compileOnly project(":Common")
 }
 
