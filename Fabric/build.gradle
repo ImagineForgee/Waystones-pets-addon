@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.7.4'
     id 'maven-publish'
     id 'idea'
     id 'net.darkhax.curseforgegradle' version '1.1.26'
@@ -41,7 +41,7 @@ dependencies {
     }
     implementation 'com.electronwill.night-config:core:3.6.5'
     implementation 'com.electronwill.night-config:toml:3.6.5'
-    modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_version}"
+    // modImplementation "fuzs.forgeconfigapiport:forgeconfigapiport-fabric:${forge_config_version}"
     implementation project(":Common")
     implementation group: 'com.google.code.findbugs', name: 'jsr305', version: '3.0.1'
 
@@ -62,6 +62,10 @@ loom {
             runDir("run")
         }
     }
+}
+
+afterEvaluate {
+    loom.mixin.useLegacyMixinAp = false
 }
 
 processResources {

@@ -79,10 +79,11 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_forge_version}") {
-        changing = balm_forge_version.endsWith("SNAPSHOT")
+    implementation fg.deobf("net.blay09.mods:balm-forge:${balm_version}") {
+        changing = balm_version.endsWith("SNAPSHOT")
     }
-    implementation fg.deobf("net.blay09.mods:waystones-forge:${waystones_forge_version}")
+    implementation fg.deobf("net.blay09.mods:waystones-forge:${waystones_version}")
+    implementation 'com.google.code.gson:gson:2.8.6'
     compileOnly project(":Common")
 }
 
@@ -146,4 +147,10 @@ modrinth {
         required.project "LOpKHB2A"
     }
     changelog = rootProject.file('CHANGELOG.md').text
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.google.code.gson:gson:2.8.6'
+    }
 }

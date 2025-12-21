@@ -29,8 +29,7 @@
     "minecraft": "${minecraft_version}",
     "java": ">=17",
     "balm-fabric": "*",
-    "waystones": "*",
-    "forgeconfigapiport": "*"
+    "waystones": "*"
   }
   }
   
